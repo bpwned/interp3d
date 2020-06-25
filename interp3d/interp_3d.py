@@ -1,4 +1,5 @@
 from .interp import _interp3D
+import numpy as np
 
 class Interp3D(object):
     def __init__(self, v, x, y, z):
@@ -13,9 +14,9 @@ class Interp3D(object):
     def __call__(self, t):
         X,Y,Z = self.v.shape[0], self.v.shape[1], self.v.shape[2]
 
-        x = (t[0]-self.min_x)/self.delta_x
-        y = (t[1]-self.min_y)/self.delta_y
-        z = (t[2]-self.min_z)/self.delta_z
+        x = (np.atleast_1d(t[...,0])-self.min_x)/self.delta_x
+        y = (np.atleast_1d(t[...,1])-self.min_y)/self.delta_y
+        z = (np.atleast_1d(t[...,2])-self.min_z)/self.delta_z
 
 
-        return _interp3D(self.v, x, y, z, X, Y, Z)
+        return np.asarray(_interp3D(self.v, x, y, z, X, Y, Z))
